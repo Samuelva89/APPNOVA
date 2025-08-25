@@ -8,13 +8,13 @@ export class LoginAuthDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(6)
-    password: string;
+    contraseña: string;
 }
 
 export class RegisterAuthDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    NombreCompleto: string;
 
     @IsEmail()
     @IsNotEmpty()
@@ -23,5 +23,5 @@ export class RegisterAuthDto {
     @IsString()
     @IsNotEmpty()
     @MinLength(6)
-    password: string;
+    contraseña: string;
 }

@@ -27,6 +27,20 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Configuration
+
+### Environment Variables
+
+This project uses environment variables for sensitive configurations, such as database connection strings. A `.env` file is used to manage these variables.
+
+**Example `.env` file:**
+
+```
+MONGODB_URI=mongodb://localhost:27017/appnova
+```
+
+Make sure to create a `.env` file in the root of your project and provide the necessary values.
+
 ## Project setup
 
 ```bash
@@ -45,6 +59,16 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## Authentication Module
+
+The project includes a basic authentication module with the following functionalities:
+- User registration
+- User login
+- Password hashing with `bcrypt`
+- JWT token generation for session management
+
+**Important:** The JWT secret key is currently a placeholder (`YOUR_SECRET_KEY`) in `src/auth/auth.module.ts` and `src/auth/jwt.strategy.ts`. **It is crucial to replace this with a strong, unique secret from your environment variables in a production environment.**
 
 ## Run tests
 

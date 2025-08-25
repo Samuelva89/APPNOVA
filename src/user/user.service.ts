@@ -9,9 +9,13 @@ import { UserDto } from './dto/user.dto';
 export class UserService {
   constructor(@InjectModel('user') private readonly userModel: Model<IUser>) {}
 
-  async crear(crearUserDto: UserDto): Promise<IUser> {
+  async create(crearUserDto: UserDto): Promise<IUser> {
     const respuesta = new this.userModel(crearUserDto);
     return await respuesta.save();
+  }
+
+  async findOneByEmail(email: string): Promise<IUser | null> {
+    return await this.userModel.findOne({ email }).exec();
   }
 
   async consultaTodos(): Promise<IUser[]> {

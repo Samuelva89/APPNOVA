@@ -15,9 +15,9 @@ import { IUser } from './dto/user.model';
 export class UserController {
   constructor(private readonly UserService: UserService) {}
 
-  @Post()
-  async crear(@Body() crearUserDto: UserDto): Promise<IUser> {
-    return await this.UserService.crear(crearUserDto);
+    @Post()
+  async create(@Body() createUserDto: UserDto): Promise<IUser> {
+    return await this.UserService.create(createUserDto);
   }
 
   @Get()
