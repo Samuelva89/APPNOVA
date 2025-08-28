@@ -6,6 +6,9 @@ import {
   Post,
   Put,
   Delete,
+  HttpCode,
+  HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
@@ -13,33 +16,43 @@ import { IUser } from './dto/user.model';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly UserService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() createUserDto: UserDto): Promise<IUser> {
-    return await this.UserService.create(createUserDto);
+  @HttpCode(HttpStatus.CREATED)
+  async crear(@Body() crearUserDto: UserDto): Promise<IUser> {
+    return await this.userService.crear(crearUserDto);
   }
 
   @Get()
   async consultarTodos(): Promise<IUser[]> {
-    return await this.UserService.consultaTodos();
+    return await this.userService.consultarTodos();
   }
 
   @Get(':id')
-  async conasultarPorId(@Param('id') id: string): Promise<IUser | null> {
-    return await this.UserService.consultarPorId(id);
+  async consultarPorId(@Param('id') id: string): Promise<IUser> {
+    return await this.userService.consultarPorId(id);
   }
 
   @Put(':id')
   async actualizar(
     @Param('id') id: string,
+    @Body() actualizarUserDTO: UserDto,
+  ): Promise<IUser> {
+    return await this.userService.actualizar(id, actualizarUserDTO);
+  }
+
+  @Patch(':id')
+  async actualizarParcial(
+    @Param('id') id: string,
     @Body() actualizarUserDTO: Partial<UserDto>,
-  ): Promise<IUser | null> {
-    return await this.UserService.actualizar(id, actualizarUserDTO);
+  ): Promise<IUser> {
+    return await this.userService.actualizar(id, actualizarUserDTO);
   }
 
   @Delete(':id')
-  async eliminar(@Param('id') id: string): Promise<IUser | null> {
-    return await this.UserService.eliminar(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async eliminar(@Param('id') id: string) {
+    await this.userService.eliminar(id);
   }
 }

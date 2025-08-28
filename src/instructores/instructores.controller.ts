@@ -4,8 +4,11 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { InstructoresService } from './instructores.service';
 import { instructoresDto } from './dto/instructores.dto';
@@ -16,6 +19,7 @@ export class InstructoresController {
   constructor(private readonly instructoresService: InstructoresService) {}
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async crear(
     @Body() crearInstructoresDto: instructoresDto,
   ): Promise<IInstructores> {
@@ -28,15 +32,26 @@ export class InstructoresController {
   }
 
   @Get(':id')
-  async consultarPorId(@Param('id') id: string): Promise<IInstructores | null> {
+  async consultarPorId(@Param('id') id: string): Promise<IInstructores> {
     return await this.instructoresService.consultarPorId(id);
   }
 
   @Put(':id')
-  async actualizar(
+  async actualizarCompleto(
+    @Param('id') id: string,
+    @Body() actualizarInstructoresDto: instructoresDto,
+  ): Promise<IInstructores> {
+    return await this.instructoresService.actualizar(
+      id,
+      actualizarInstructoresDto,
+    );
+  }
+
+  @Patch(':id')
+  async actualizarParcial(
     @Param('id') id: string,
     @Body() actualizarInstructoresDto: Partial<instructoresDto>,
-  ): Promise<IInstructores | null> {
+  ): Promise<IInstructores> {
     return await this.instructoresService.actualizar(
       id,
       actualizarInstructoresDto,
@@ -44,7 +59,8 @@ export class InstructoresController {
   }
 
   @Delete(':id')
-  async eliminar(@Param('id') id: string): Promise<IInstructores | null> {
-    return await this.instructoresService.eliminar(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async eliminar(@Param('id') id: string) {
+    await this.instructoresService.eliminar(id);
   }
 }
