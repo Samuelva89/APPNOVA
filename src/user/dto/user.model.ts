@@ -10,7 +10,7 @@ export const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
 
     // Contraseña (encriptada), requerida
-    contraseña: { type: String, required: true },
+    contraseña: { type: String, required: true, unique: true },
   },
   { timestamps: true }, // Agrega automáticamente createdAt y updatedAt
 );

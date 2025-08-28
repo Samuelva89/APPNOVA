@@ -27,7 +27,7 @@ export class AprendizController {
 
   @Get(':id')
   async consultarPorId(
-    @Body() @Param('id') id: string,
+    @Param('id') id: string,
   ): Promise<IAprendiz | null> {
     return await this.aprendizService.consultarPorId(id);
   }

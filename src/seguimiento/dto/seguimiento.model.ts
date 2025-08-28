@@ -5,8 +5,6 @@ import { IUser } from 'src/user/dto/user.model';
 // Esquema de Mongoose para la colección de Observaciones de Seguimiento
 export const ObservacionSegSchema = new mongoose.Schema(
   {
-    proyecto: { type: String, required: true },
-    user: { type: String, required: true },
     observacion: { type: String, required: true },
     fecha_observacion: { type: Date },
   },

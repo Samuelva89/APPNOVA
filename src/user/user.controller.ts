@@ -15,7 +15,7 @@ import { IUser } from './dto/user.model';
 export class UserController {
   constructor(private readonly UserService: UserService) {}
 
-    @Post()
+  @Post()
   async create(@Body() createUserDto: UserDto): Promise<IUser> {
     return await this.UserService.create(createUserDto);
   }
@@ -23,6 +23,11 @@ export class UserController {
   @Get()
   async consultarTodos(): Promise<IUser[]> {
     return await this.UserService.consultaTodos();
+  }
+
+  @Get(':id')
+  async conasultarPorId(@Param('id') id: string): Promise<IUser | null> {
+    return await this.UserService.consultarPorId(id);
   }
 
   @Put(':id')

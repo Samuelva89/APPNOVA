@@ -26,9 +26,7 @@ export class CronogramaController {
   }
 
   @Get(':id')
-  async consultarPorId(
-    @Body() @Param('id') id: string,
-  ): Promise<ICronograma | null> {
+  async consultarPorId(@Param('id') id: string): Promise<ICronograma | null> {
     return await this.cronogramaService.consultarPorId(id);
   }
 

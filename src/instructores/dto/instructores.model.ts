@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { IAprendiz } from 'src/aprendiz/dto/aprendiz.model';
+import { IUser } from 'src/user/dto/user.model';
 
 // Esquema de Mongoose para la colección de Instructores
 export const InstructoresSchema = new mongoose.Schema(
@@ -17,7 +19,8 @@ export const InstructoresSchema = new mongoose.Schema(
 
 // Interfaz que representa un documento de Instructor en MongoDB
 export interface IInstructores extends mongoose.Document {
-  //User: IUser; // Relación con el user
+  User: IUser; // Relación con el user
+  aprendiz: IAprendiz[]; // Relación con aprendiz
   Nombre_Instructor: string; // Nombre del instructor
   Email: string; // Correo electrónico
   Documento_Identidad: number; // Documento de identidad
