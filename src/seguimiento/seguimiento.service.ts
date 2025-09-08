@@ -28,7 +28,7 @@ export class SeguimientoService {
   }
 
   async consultarID(id: string): Promise<ISeguimiento> {
-    const seguimiento = await this.seguimientoModel.findById(id).exec();
+    const seguimiento = await this.seguimientoModel.findById(id).populate(['Projecto', 'user']).exec();
     if (!seguimiento) {
       throw new NotFoundException(
         `Observación de seguimiento con ID "${id}" no encontrada.`,

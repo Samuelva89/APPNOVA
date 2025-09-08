@@ -20,6 +20,8 @@ export const CronogramaSchema = new mongoose.Schema(
     },
     fecha_inicio: { type: Date },
     fecha_fin: { type: Date },
+
+    projecto:{type: Schema.Types.ObjectId, ref: 'Projecto'},//Referencia al modelo Projecto
   },
   { timestamps: true }, // createdAt y updatedAt automáticos
 );

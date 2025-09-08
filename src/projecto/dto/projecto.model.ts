@@ -22,6 +22,12 @@ export const ProjectoSchema: Schema = new mongoose.Schema(
       required: true, 
       unique: true // 👈 Evita que se repitan los títulos
     },
+    aprendiz:{type: Schema.Types.ObjectId, ref: 'Aprendiz'},//Referencia al modelo Aprendiz
+    instructores:{type: Schema.Types.ObjectId, ref: 'Instructores'},//Referencia al modelo Instructor
+    cronograma:{type: Schema.Types.ObjectId, ref: 'Cronograma'},//Referencia al modelo Cronograma
+    evidencias:{type: Schema.Types.ObjectId, ref: 'Evidencias'},//Referencia al modelo Evidencias
+    seguimiento:{type: Schema.Types.ObjectId, ref: 'Seguimiento'},//Referencia al modelo Seguimiento
+
 
     resumen: { type: String, required: true },
     planteamientodelProblema: { type: String, required: true },
@@ -44,4 +50,5 @@ export const ProjectoSchema: Schema = new mongoose.Schema(
   {
     timestamps: true,
   },
+
 );

@@ -29,7 +29,7 @@ export class SemilleroService {
   }
 
   async consultarID(id: string): Promise<ISemillero> {
-    const semillero = await this.semilleroModel.findById(id).exec();
+    const semillero = await this.semilleroModel.findById(id).populate('Projecto').exec();
     if (!semillero) {
       throw new NotFoundException(`Semillero con ID "${id}" no encontrado.`);
     }

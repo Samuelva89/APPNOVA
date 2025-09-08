@@ -29,7 +29,7 @@ export class CronogramaService {
   }
 
   async consultarPorId(id: string): Promise<ICronograma> {
-    const cronograma = await this.cronogramaModel.findById(id).exec();
+    const cronograma = await this.cronogramaModel.findById(id).populate('Projecto').exec();
     if (!cronograma) {
       throw new NotFoundException(`Cronograma con ID "${id}" no encontrado.`);
     }

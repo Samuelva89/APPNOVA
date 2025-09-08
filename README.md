@@ -70,6 +70,21 @@ The project includes a basic authentication module with the following functional
 
 **Important:** The JWT secret key is currently a placeholder (`YOUR_SECRET_KEY`) in `src/auth/auth.module.ts` and `src/auth/jwt.strategy.ts`. **It is crucial to replace this with a strong, unique secret from your environment variables in a production environment.**
 
+## Arquitectura de Datos
+
+La arquitectura de datos del proyecto se centra en el módulo `Projecto` como entidad principal. Las relaciones se gestionan a través de referencias de Mongoose (`ref`).
+
+*   **Modelos Base:** `Aprendiz`, `Instructores`, y `User` son las entidades fundamentales que no dependen de otras.
+*   **Modelo `Projecto` (Núcleo):**
+    *   Apunta a `Aprendiz` (un proyecto tiene un aprendiz).
+    *   Apunta a `Instructores` (un proyecto tiene un instructor).
+*   **Módulos Dependientes:**
+    *   `Cronograma`, `Evidencias`, y `Seguimiento` apuntan todos hacia `Projecto`, vinculando sus datos a un proyecto específico.
+*   **Modelo `Semillero` (Relación Múltiple):**
+    *   Contiene arrays de referencias a `Aprendiz` e `Instructores`, permitiendo que un semillero tenga **muchos** aprendices e instructores.
+
+Este diseño permite el uso extensivo de `.populate()` para componer objetos complejos a partir de estas relaciones en las consultas.
+
 ## Run tests
 
 ```bash

@@ -17,6 +17,8 @@ export const SeguimientoSchema: Schema = new mongoose.Schema(
       type: Date,
       required: false,
     },
+    projecto:{type: Schema.Types.ObjectId, ref: 'Projecto'},//Referencia al modelo Projecto
+    user:{type: Schema.Types.ObjectId, ref: 'User'},//Referencia al modelo User
   },
   {
     timestamps: true,

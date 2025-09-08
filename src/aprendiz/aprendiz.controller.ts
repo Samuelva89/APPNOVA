@@ -6,35 +6,46 @@ import {
   Param,
   Post,
   Put,
-  Patch, // 👈 Importamos Patch
-  HttpCode, // 👈 Importamos HttpCode
-  HttpStatus, // 👈 Importamos HttpStatus
+  Patch,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { AprendizService } from './aprendiz.service';
 import { AprendizDto } from './dto/aprendiz.dto';
 import { IAprendiz } from './dto/aprendiz.model';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserRole } from 'src/common/constants/roles.enum';
 
 @Controller('aprendiz')
 export class AprendizController {
   constructor(private readonly aprendizService: AprendizService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @HttpCode(HttpStatus.CREATED)
   async crear(@Body() crearAprendizDto: AprendizDto): Promise<IAprendiz> {
     return await this.aprendizService.crear(crearAprendizDto);
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   async consultarTodos(): Promise<IAprendiz[]> {
     return await this.aprendizService.consultarTodos();
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   async consultarPorId(@Param('id') id: string): Promise<IAprendiz> {
     return await this.aprendizService.consultarPorId(id);
   }
 
-  @Put(':id') // 👈 PUT para actualización completa
+  @Put(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async actualizarCompleto(
     @Param('id') id: string,
     @Body() actualizarAprendizDto: AprendizDto,
@@ -42,7 +53,8 @@ export class AprendizController {
     return await this.aprendizService.actualizar(id, actualizarAprendizDto);
   }
 
-  @Patch(':id') // 👈 PATCH para actualización parcial
+  @Patch(':id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async actualizarParcial(
     @Param('id') id: string,
     @Body() actualizarAprendizDto: Partial<AprendizDto>,
@@ -51,7 +63,8 @@ export class AprendizController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT) // Retorna 204 No Content en caso de éxito
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async eliminar(@Param('id') id: string): Promise<void> {
     await this.aprendizService.eliminar(id);
   }

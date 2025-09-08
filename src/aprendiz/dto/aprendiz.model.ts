@@ -24,6 +24,7 @@ export const AprendizSchema: Schema = new Schema({
     required: true,
     unique: true // 👈 Evita que se creen aprendices con el mismo número
   },
+  projecto:{type: Schema.Types.ObjectId, ref: 'Projecto'},//Referencia al modelo Projecto
 
   // Número de ficha
   Numero_de_ficha: { type: Number, required: true },

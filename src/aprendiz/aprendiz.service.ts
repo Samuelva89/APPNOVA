@@ -31,7 +31,7 @@ export class AprendizService {
   }
 
   async consultarPorId(id: string): Promise<IAprendiz> {
-    const aprendiz = await this.aprendizModel.findById(id).exec();
+    const aprendiz = await this.aprendizModel.findById(id).populate('Projecto').exec();
     if (!aprendiz) {
       throw new NotFoundException(`Aprendiz con ID "${id}" no encontrado.`);
     }

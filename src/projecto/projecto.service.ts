@@ -34,7 +34,7 @@ export class ProjectoService {
   }
 
   async consultarPorId(id: string): Promise<Iprojecto> {
-    const projecto = await this.ProjectoModel.findById(id).exec();
+    const projecto = await this.ProjectoModel.findById(id).populate(['aprenidz', 'instructores', 'cronograma', 'evidencias', 'seguimiento']).exec();
     if (!projecto) {
       throw new NotFoundException(`Proyecto con ID "${id}" no encontrado.`);
     }
