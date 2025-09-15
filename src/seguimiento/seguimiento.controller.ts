@@ -20,12 +20,12 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { UserRole } from 'src/common/constants/roles.enum';
 
 @Controller('seguimiento')
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class seguimientoController {
   constructor(private readonly seguimientoService: SeguimientoService) {}
 
   @Post()
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   @HttpCode(HttpStatus.CREATED)
   async crear(
     @Body() crearObservacionSegDto: ObservacionSegDto,
@@ -34,22 +34,29 @@ export class seguimientoController {
   }
 
   @Get()
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(
+    UserRole.LIDER_DE_PROYECTO,
+    UserRole.DINAMIZADOR,
+    UserRole.COINVENTIGADOR,
+    UserRole.INVESTIGADOR,
+  )
   async consultarTodos(): Promise<ISeguimiento[]> {
     return await this.seguimientoService.consultarTodos();
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(
+    UserRole.LIDER_DE_PROYECTO,
+    UserRole.DINAMIZADOR,
+    UserRole.COINVENTIGADOR,
+    UserRole.INVESTIGADOR,
+  )
   async consultarID(@Param('id') id: string): Promise<ISeguimiento> {
     return await this.seguimientoService.consultarID(id);
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   async actualizar(
     @Param('id') id: string,
     @Body() actualizarDto: ObservacionSegDto,
@@ -58,8 +65,7 @@ export class seguimientoController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   async actualizarParcial(
     @Param('id') id: string,
     @Body() actualizarDto: Partial<ObservacionSegDto>,
@@ -68,8 +74,7 @@ export class seguimientoController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(UserRole.DINAMIZADOR)
+  @Roles(UserRole.LIDER_DE_PROYECTO, UserRole.DINAMIZADOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   async eliminar(@Param('id') id: string) {
     await this.seguimientoService.eliminar(id);

@@ -5,23 +5,25 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Iprojecto } from './dto/projecto.model';
-import { projectoDto } from './dto/projecto.dto';
+import { IProjecto } from './dto/projecto.model';
+import { ProjectoDto } from './dto/projecto.dto';
 
 @Injectable()
 export class ProjectoService {
   constructor(
-    @InjectModel('Projecto') private readonly ProjectoModel: Model<Iprojecto>,
+    @InjectModel('Projecto') private readonly ProjectoModel: Model<IProjecto>,
   ) {}
 
-  async crear(crearProjectoDto: projectoDto): Promise<Iprojecto> {
-    const { titulo } = crearProjectoDto;
+  async crear(crearProjectoDto: ProjectoDto): Promise<IProjecto> {
+    const { tituloDeProyecto } = crearProjectoDto;
 
-    const projectoExistente = await this.ProjectoModel.findOne({ titulo }).exec();
+    const projectoExistente = await this.ProjectoModel.findOne({
+      tituloDeProyecto,
+    }).exec();
 
     if (projectoExistente) {
       throw new ConflictException(
-        `Ya existe un proyecto con el título "${titulo}".`,
+        `Ya existe un proyecto con el título "${tituloDeProyecto}".`,
       );
     }
 
@@ -29,12 +31,21 @@ export class ProjectoService {
     return await nuevoProjecto.save();
   }
 
-  async consultarTodos(): Promise<Iprojecto[]> {
+  async consultarTodos(): Promise<IProjecto[]> {
     return await this.ProjectoModel.find().exec();
   }
 
-  async consultarPorId(id: string): Promise<Iprojecto> {
-    const projecto = await this.ProjectoModel.findById(id).populate(['aprenidz', 'instructores', 'cronograma', 'evidencias', 'seguimiento']).exec();
+  async consultarPorId(id: string): Promise<IProjecto> {
+    const projecto = await this.ProjectoModel.findById(id)
+      .populate([
+        'aprendices',
+        'instructores',
+        'cronograma',
+        'evidencias',
+        'seguimiento',
+        'semillero',
+      ])
+      .exec();
     if (!projecto) {
       throw new NotFoundException(`Proyecto con ID "${id}" no encontrado.`);
     }
@@ -43,14 +54,16 @@ export class ProjectoService {
 
   async actualizar(
     id: string,
-    actualizarProjectoDto: Partial<projectoDto>,
-  ): Promise<Iprojecto> {
-    const projectoActualizado = await this.ProjectoModel
-      .findByIdAndUpdate(id, actualizarProjectoDto, {
+    actualizarProjectoDto: Partial<ProjectoDto>,
+  ): Promise<IProjecto> {
+    const projectoActualizado = await this.ProjectoModel.findByIdAndUpdate(
+      id,
+      actualizarProjectoDto,
+      {
         new: true,
         runValidators: true,
-      })
-      .exec();
+      },
+    ).exec();
 
     if (!projectoActualizado) {
       throw new NotFoundException(`Proyecto con ID "${id}" no encontrado.`);
@@ -58,10 +71,9 @@ export class ProjectoService {
     return projectoActualizado;
   }
 
-  async eliminar(id: string): Promise<Iprojecto> {
-    const projectoEliminado = await this.ProjectoModel
-      .findByIdAndDelete(id)
-      .exec();
+  async eliminar(id: string): Promise<IProjecto> {
+    const projectoEliminado =
+      await this.ProjectoModel.findByIdAndDelete(id).exec();
     if (!projectoEliminado) {
       throw new NotFoundException(`Proyecto con ID "${id}" no encontrado.`);
     }
