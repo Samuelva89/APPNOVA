@@ -1,1 +1,0 @@
-# Documentos del Projecto APPNOVA
